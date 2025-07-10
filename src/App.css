@@ -1,0 +1,7 @@
+@import "tailwindcss";
+form {
+  min-width: 300px;
+}
+.img-container {
+  min-width: 500px;
+}
