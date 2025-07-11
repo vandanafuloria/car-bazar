@@ -1,11 +1,21 @@
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
-import { validateEmail } from "../utils/utility";
 
 import { FaGoogle } from "react-icons/fa";
 import { SiGmail } from "react-icons/si";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../utils/constans";
+
+import {
+  validateEmail,
+  validateMobile,
+  validatePassword,
+} from "../utils/utility";
 
 export default function Login() {
+  const [loginError, setLoginError] = useState("");
+  const [loginSuccess, setSuccess] = useState(false);
   const img =
     "https://motorik.in/cdn/shop/collections/ban1.png?v=1745311178&width=1500";
   const [details, setDetails] = useState({
@@ -15,24 +25,11 @@ export default function Login() {
 
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-
-  function onDetailsChange(e) {
-    const { name, value } = e.target;
-
-    setDetails((prev) => ({ ...prev, [name]: value }));
-
-    if (name === "email") {
-      if (!validateEmail(value)) {
-        setEmailError("Invalid email address");
-      } else {
-        setEmailError("");
-      }
-    }
-  }
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
-      const res = await fetch("http://localhost:3000/login", {
+      const res = await fetch(`${BASE_URL}/login`, {
         method: "POST",
         body: JSON.stringify(details),
         headers: {
@@ -44,15 +41,42 @@ export default function Login() {
       const resBody = await res.json(); // store token in local
 
       if (status === 200) {
-        console.log("Authentication Successful ! Navigating to home page");
+        toast.success("Authentication Successful ! Navigating to home page");
+        navigate("/home");
       } else {
-        console.log("Authentication failed");
+        toast.error("Password or Email not correct");
       }
     } catch (err) {
-      console.error(err);
+      toast.error(err.message);
     }
   };
-  const navigate = useNavigate();
+
+  function onDetailsChange(e) {
+    const { name, value } = e.target;
+    setDetails((prev) => ({ ...prev, [name]: value }));
+  }
+
+  function handleBlur(e) {
+    const { name, value } = e.target;
+
+    if (name === "email") {
+      if (!validateEmail(value)) {
+        setEmailError("Invalid email address");
+      } else {
+        setEmailError("");
+      }
+    }
+
+    if (name === "password") {
+      if (!validatePassword(value)) {
+        setPasswordError(
+          "Password must be 8+ chars with at least 1 capital, 1 number, and 1 special character"
+        );
+      } else {
+        setPasswordError("");
+      }
+    }
+  }
 
   return (
     <div className="flex  m-auto  h-screen">
@@ -64,6 +88,11 @@ export default function Login() {
         <p className="text-gray-300 text-center my-3">
           Enter Your credential to access your account
         </p>
+        <span>
+          <ToastContainer position="top-right" autoClose={1000} />
+        </span>
+
+        <h3 className="text-red-700 text-center h-5">{loginError}</h3>
         <form
           className="bg-gray-400 p-5 w-2/4 m-auto flex flex-col gap-2"
           noValidate
@@ -78,9 +107,10 @@ export default function Login() {
               type="email"
               name="email"
               id="email"
-              placeholder="Type Your Email"
+              placeholder="Enter Email"
               value={details.email}
               onChange={(e) => onDetailsChange(e)}
+              onBlur={handleBlur}
             />
             <span className="text-red-600 text-sm">{emailError}</span>
           </fieldset>
@@ -93,10 +123,12 @@ export default function Login() {
               type="password"
               id="password"
               name="password"
-              placeholder="password"
+              placeholder="Enter Password"
               value={details.password}
               onChange={(e) => onDetailsChange(e)}
+              onBlur={handleBlur}
             />
+            <span className="text-red-600 text-sm">{passwordError}</span>
           </fieldset>
           <div className="flex justify-between">
             <div>

@@ -3,6 +3,9 @@ import { FaGoogle } from "react-icons/fa";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Login from "../LoginPage/LoginPage";
+import { BASE_URL } from "../utils/constans";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   validateEmail,
   validateMobile,
@@ -26,14 +29,31 @@ export default function Signup() {
   const [MobileError, setMobileError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [passwordType, setPasswordType] = useState("");
+  const [name, setName] = useState("");
+  const [last, setLast] = useState("");
 
   const img =
     "https://motorik.in/cdn/shop/collections/ban1.png?v=1745311178&width=1500";
 
   function onCreatingAccountChanges(e) {
     const { name, value } = e.target;
-
     setCreateAccount((prev) => ({ ...prev, [name]: value }));
+  }
+
+  function handleAccountBlur(e) {
+    const { name, value } = e.target;
+
+    if (name === "first") {
+      if (value == "") {
+        setName("Required");
+      }
+    }
+
+    if (name === "last") {
+      if (value == "") {
+        setLast("Required");
+      }
+    }
 
     if (name === "email") {
       if (!validateEmail(value)) {
@@ -42,20 +62,24 @@ export default function Signup() {
         setEmailError("");
       }
     }
+
     if (name === "age") {
-      if (value < 18) setAgeError("Your age Should alteast 18");
-      else {
+      if (value < 18) {
+        setAgeError("Your age should be at least 18");
+      } else {
         setAgeError("");
       }
     }
-    if (name == "contact") {
+
+    if (name === "contact") {
       if (!validateMobile(value)) {
-        setMobileError("Please Enter Valid Mobile number");
+        setMobileError("Please enter a valid mobile number");
       } else {
         setMobileError("");
       }
     }
-    if (name == "password") {
+
+    if (name === "password") {
       if (!validatePassword(value)) {
         setPasswordType(
           "Password must be 8+ chars with at least 1 capital, 1 number, and 1 special character"
@@ -67,34 +91,35 @@ export default function Signup() {
 
     if (name === "confirm") {
       if (value !== createAccount.password) {
-        setPasswordError("password not matched");
+        setPasswordError("Passwords do not match");
       } else {
         setPasswordError("");
       }
     }
   }
 
-  async function newUser({ createAccount }) {
-    // const { first, last, email, age, contact, password } = createAccount;
-    console.log(createAccount);
-
+  const handleSignup = async () => {
     try {
-      const res = await fetch("/signup", {
+      const res = await fetch(`${BASE_URL}/signup`, {
         method: "POST",
-        // body: JSON.stringify({ first, last, email, age, contact, password }),
+        body: JSON.stringify(createAccount),
         headers: {
           "Content-Type": "application/json",
           Authentication: "Bearer ",
         },
       });
       const { status } = res;
-      const resBody = await res.json();
-      console.log({ status });
-      console.log(resBody);
+      const resBody = await res.json(); // store token in local
+
+      if (status === 200) {
+        console.log("suscces", status);
+        toast.success(" Signup Successful ! Navigating to home page");
+        navigate("/home");
+      }
     } catch (err) {
-      console.error(err);
+      toast.error(err.message);
     }
-  }
+  };
   const navigate = useNavigate();
 
   return (
@@ -108,94 +133,111 @@ export default function Signup() {
           <form
             className="bg-gray-400 p-5 w-1/2 m-auto  min-w-[800px] flex flex-col gap-2"
             noValidate
-            onSubmit={() => newUser(createAccount)}
+            onSubmit={(e) => e.preventDefault()}
           >
             <fieldset>
               <label htmlFor="name">First</label>
               <input
                 className="w-full bg-white outline-none p-1"
                 type="text"
-                placeholder="enter your name"
+                id="name"
+                placeholder="Enter first Name"
                 name="first"
                 value={createAccount.first}
                 onChange={(e) => onCreatingAccountChanges(e)}
+                onBlur={handleAccountBlur}
               />
+              <span className="text-red-600 text-sm">{name}</span>
             </fieldset>
             <fieldset>
-              <label htmlFor="name">Last</label>
+              <label htmlFor="last">Last</label>
               <input
                 className="w-full bg-white outline-none p-1"
                 type="text"
+                id="last"
                 name="last"
-                placeholder="enter your name"
+                placeholder="Enter Last Name"
                 value={createAccount.last}
                 onChange={(e) => onCreatingAccountChanges(e)}
+                onBlur={handleAccountBlur}
               />
+              <span className="text-red-600 text-sm">{last}</span>
             </fieldset>
             <fieldset>
-              <label htmlFor="name">Email</label>
+              <label htmlFor="email">Email</label>
               <input
                 className="w-full bg-white outline-none p-1"
                 type="text"
-                placeholder="enter your name"
+                placeholder="Enter Email"
                 name="email"
+                id="email"
                 value={createAccount.email}
                 onChange={(e) => onCreatingAccountChanges(e)}
+                onBlur={handleAccountBlur}
               />
-              <span className="text-sm text-red-500">{emailError}</span>
+              <span className=" text-red-500 text-sm">{emailError}</span>
             </fieldset>
             <fieldset>
-              <label htmlFor="name">Age</label>
+              <label htmlFor="age">Age</label>
               <input
                 className="w-full bg-white outline-none p-1"
                 type="number"
-                placeholder="enter your name"
+                placeholder="Enter Age"
+                id="age"
                 name="age"
                 value={createAccount.age}
                 onChange={(e) => onCreatingAccountChanges(e)}
+                onBlur={handleAccountBlur}
               />
-              <span>{ageError}</span>
+              <span className=" text-red-500 text-sm">{ageError}</span>
             </fieldset>
             <fieldset>
-              <label htmlFor="name">contact</label>
+              <label htmlFor="mobile">Mobile</label>
               <input
                 className="w-full bg-white outline-none p-1"
                 type="text"
-                placeholder="enter your name"
+                id="mobile"
+                placeholder="Mobile"
                 name="contact"
                 value={createAccount.contact}
                 onChange={(e) => onCreatingAccountChanges(e)}
+                onBlur={handleAccountBlur}
               />
-              <span>{MobileError}</span>
+              <span className=" text-red-500 text-sm">{MobileError}</span>
             </fieldset>
             <fieldset>
-              <label htmlFor="name">password</label>
+              <label htmlFor="password">password</label>
               <input
                 className="w-full bg-white outline-none p-1"
                 type="text"
-                placeholder="enter your name"
+                placeholder="Password"
+                id="password"
                 name="password"
                 value={createAccount.password}
                 onChange={(e) => onCreatingAccountChanges(e)}
+                onBlur={handleAccountBlur}
               />
-              <span>{passwordType}</span>
+              <span className="text-sm text-red-500">{passwordType}</span>
             </fieldset>
             <fieldset>
-              <label htmlFor="name">confirm password</label>
+              <label htmlFor="confirm">Confirm Password</label>
               <input
                 className="w-full bg-white outline-none p-1"
-                type="password"
-                placeholder="enter your name"
+                type="confirm"
+                id="confirm"
+                placeholder="Confirm Password"
                 name="confirm"
                 value={createAccount.confirm}
                 onChange={(e) => onCreatingAccountChanges(e)}
+                onBlur={handleAccountBlur}
               />
-              <span>{passwordError}</span>
+              <span className="text-sm text-red-500">{passwordError}</span>
             </fieldset>
 
             <button
               type="submit"
               className="bg-red-600 font-semibold text-2xl w-full text-white"
+              onClick={handleSignup}
             >
               Sign Up
             </button>

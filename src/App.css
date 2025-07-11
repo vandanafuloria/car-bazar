@@ -5,3 +5,15 @@ form {
 .img-container {
   min-width: 250px;
 }
+input {
+  transition: all ease-in-out 0.5s;
+  border: 1px transparent solid;
+}
+input:hover {
+  transform: translateY(-4px) scale(0.999);
+  background-color: rgb(63, 62, 62);
+  color: white;
+}
+input:focus {
+  border-color: gray;
+}
