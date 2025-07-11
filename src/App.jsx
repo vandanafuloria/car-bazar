@@ -1,21 +1,20 @@
 import { useState } from "react";
-import Login from "./SignPage/Signup";
+import Account from "./AccountPage/Account";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import Signup from "./SignPage/Signup";
+import Login from "./LoginPage/LoginPage";
 
 import "./App.css";
 
 function App() {
-  const [login, setLogin] = useState(false);
-  const [singup, setSignup] = useState(true);
-  function toggleSignupLogin() {
-    setSignup(true);
-    setLogin(false);
-    console.log("singing");
-  }
   return (
-    <>
-      {" "}
-      <Login login={login} signup={singup} onClick={toggleSignupLogin} />
-    </>
+    <Router>
+      <Routes>
+        <Route path="/Signup" element={<Signup />} />
+        <Route path="/Login" element={<Login />} />
+      </Routes>
+    </Router>
   );
 }
 
