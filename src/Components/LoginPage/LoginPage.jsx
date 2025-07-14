@@ -6,16 +6,14 @@ import { FaGoogle } from "react-icons/fa";
 import { SiGmail } from "react-icons/si";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constans";
+import login from "../../assets/new.svg";
 
-import {
-  validateEmail,
-  validateMobile,
-  validatePassword,
-} from "../utils/utility";
+import { validateEmail, validatePassword } from "../utils/utility";
 
 export default function Login() {
   const [loginError, setLoginError] = useState("");
   const [loginSuccess, setSuccess] = useState(false);
+  const [isSpinner, setIsSpinner] = useState(false);
   const img =
     "https://motorik.in/cdn/shop/collections/ban1.png?v=1745311178&width=1500";
   const [details, setDetails] = useState({
@@ -39,6 +37,7 @@ export default function Login() {
       });
       const { status } = res;
       const resBody = await res.json(); // store token in local
+      setIsSpinner(false);
 
       if (status === 200) {
         toast.success("Authentication Successful ! Navigating to home page");
@@ -67,15 +66,15 @@ export default function Login() {
       }
     }
 
-    if (name === "password") {
-      if (!validatePassword(value)) {
-        setPasswordError(
-          "Password must be 8+ chars with at least 1 capital, 1 number, and 1 special character"
-        );
-      } else {
-        setPasswordError("");
-      }
-    }
+    // if (name === "password") {
+    //   if (!validatePassword(value)) {
+    //     setPasswordError(
+    //       "Password must be 8+ chars with at least 1 capital, 1 number, and 1 special character"
+    //     );
+    //   } else {
+    //     setPasswordError("");
+    //   }
+    // }
   }
 
   return (
@@ -89,7 +88,7 @@ export default function Login() {
           Enter Your credential to access your account
         </p>
         <span>
-          <ToastContainer position="top-right" autoClose={1000} />
+          {/* <ToastContainer position="top-right" autoClose={1000} /> */}
         </span>
 
         <h3 className="text-red-700 text-center h-5">{loginError}</h3>
@@ -143,10 +142,21 @@ export default function Login() {
           </div>
           <button
             type="submit"
-            className="bg-red-600 font-semibold text-2xl w-full text-white"
-            onClick={handleLogin}
+            className="bg-gray-100 font-semibold text-2xl text-white flex justify-center gap-2 relative"
+            onClick={() => {
+              setIsSpinner(true);
+              handleLogin;
+            }}
           >
-            Login
+            <span className="text-red-600">Login</span>
+            {details.email && details.password && isSpinner && (
+              <img
+                className="spinner absolute right"
+                width="35px"
+                src={login}
+                alt=""
+              />
+            )}
           </button>
 
           <div className="text-center">

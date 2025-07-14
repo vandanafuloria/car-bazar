@@ -16,11 +16,10 @@ export default function Signup() {
   const signupDetails = {
     first: "",
     last: "",
-    contact: "",
+    mobile: "",
     email: "",
     password: "",
     age: "",
-    confirm: "",
   };
   //   const [details, setDetails] = useState(loginDetails);
   const [createAccount, setCreateAccount] = useState(signupDetails);
@@ -36,6 +35,7 @@ export default function Signup() {
     "https://motorik.in/cdn/shop/collections/ban1.png?v=1745311178&width=1500";
 
   function onCreatingAccountChanges(e) {
+    //onFormChange, onInputChange
     const { name, value } = e.target;
     setCreateAccount((prev) => ({ ...prev, [name]: value }));
   }
@@ -105,16 +105,22 @@ export default function Signup() {
         body: JSON.stringify(createAccount),
         headers: {
           "Content-Type": "application/json",
-          Authentication: "Bearer ",
+          // Authentication: "Bearer ",
         },
       });
+      console.log(createAccount);
+      console.log(res);
       const { status } = res;
       const resBody = await res.json(); // store token in local
+      console.log(resBody);
 
-      if (status === 200) {
+      if (status === 201) {
+        //  The request was successful and a new resource was created.
         console.log("suscces", status);
         toast.success(" Signup Successful ! Navigating to home page");
         navigate("/home");
+      } else {
+        toast.error(resBody.error);
       }
     } catch (err) {
       toast.error(err.message);
@@ -185,7 +191,7 @@ export default function Signup() {
                 placeholder="Enter Age"
                 id="age"
                 name="age"
-                value={createAccount.age}
+                value={Number(createAccount.age)}
                 onChange={(e) => onCreatingAccountChanges(e)}
                 onBlur={handleAccountBlur}
               />
@@ -198,8 +204,8 @@ export default function Signup() {
                 type="text"
                 id="mobile"
                 placeholder="Mobile"
-                name="contact"
-                value={createAccount.contact}
+                name="mobile"
+                value={createAccount.mobile}
                 onChange={(e) => onCreatingAccountChanges(e)}
                 onBlur={handleAccountBlur}
               />
@@ -228,7 +234,7 @@ export default function Signup() {
                 placeholder="Confirm Password"
                 name="confirm"
                 value={createAccount.confirm}
-                onChange={(e) => onCreatingAccountChanges(e)}
+                // onChange={(e) => onCreatingAccountChanges(e)}
                 onBlur={handleAccountBlur}
               />
               <span className="text-sm text-red-500">{passwordError}</span>
