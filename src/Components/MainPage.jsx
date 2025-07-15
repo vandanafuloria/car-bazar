@@ -1,10 +1,10 @@
 import HomePage from "../HomePage";
+import Products from "./Products";
 
 export default function MainPage() {
   return (
     <>
       <div>
-        <HomePage />
         <div className="main-page text-gray-100 p-4 ">
           <div>
             <h1 className="text-4xl font-extrabold md:text-6xl">
@@ -16,6 +16,9 @@ export default function MainPage() {
             <button className=" p-3 my-4">Explore now</button>
           </div>
           <div></div>
+        </div>
+        <div>
+          <Products />
         </div>
       </div>
     </>

@@ -28,6 +28,9 @@ input:focus {
   background-size: cover;
   height: 70vh;
 }
+.home {
+  background-color: rgba(0, 0, 0, 0.944);
+}
 
 header {
   color: gainsboro;
@@ -80,4 +83,21 @@ button:focus:before {
 
 button:active {
   transform: scale(0.9);
+}
+.car:hover .btn {
+  visibility: visible;
+}
+.btn {
+  visibility: hidden;
+}
+.car-img {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.car:hover .car-img {
+  transform: translateY(-10px) scale(0.95); /* Move up and shrink */
+  opacity: 0.9; /* Optional fade effect */
+}
+.grid {
+  z-index: -1;
 }

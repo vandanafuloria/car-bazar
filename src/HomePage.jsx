@@ -2,7 +2,7 @@ import { FaUser } from "react-icons/fa";
 export default function HomePage() {
   return (
     <>
-      <div className="sticky top-0 bg-black bg-opacity-90 h-30 p-4">
+      <div className="home sticky top-0 h-30 p-4 z-50">
         <header className="flex justify-between gap-5 w-full flex-wrap">
           <h1 className="font-bold text-4xl">
             <span>CAR</span>
