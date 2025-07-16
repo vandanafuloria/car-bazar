@@ -56,8 +56,6 @@ export default function Products() {
   const navigate = useNavigate();
 
   async function handleClickProduct(id) {
-    console.log("this is onlcil", id);
-
     const car = await fetch(`${BASE_URL}/cars/${id}`, {
       method: "GET",
       headers: {
@@ -76,7 +74,7 @@ export default function Products() {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Available Cars</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">Available Cars</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {cars.map((car) => (

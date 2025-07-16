@@ -22,7 +22,7 @@ input:focus {
   right: 1rem;
 }
 .main-page {
-  background-image: url("./assets/main.jpg");
+  background-image: url("https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -36,26 +36,28 @@ header {
   color: gainsboro;
 }
 li {
-  min-width: 80px;
+  min-width: 50px;
 }
-button {
-  letter-spacing: 2px;
+button,
+.imp {
+  letter-spacing: 1px;
   text-transform: uppercase;
   display: inline-block;
   text-align: center;
   font-weight: bold;
   padding: 0.7em 2em;
-  border: 3px solid #ff0072;
+  border: 1px solid orangered;
   border-radius: 2px;
   position: relative;
   /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.1); */
-  color: #ff0072;
+  color: rgba(255, 68, 0, 0.822);
   text-decoration: none;
   transition: 0.3s ease all;
   z-index: 1;
 }
 
-button:before {
+button:before,
+.imp::before {
   transition: 0.5s all ease;
   position: absolute;
   top: 0;
@@ -64,17 +66,19 @@ button:before {
   bottom: 0;
   opacity: 0;
   content: "";
-  background-color: #ff4800;
+  background-color: black;
   z-index: -1;
 }
 
 button:hover,
-button:focus {
+button:focus,
+.imp:hover {
   color: white;
 }
 
 button:hover:before,
-button:focus:before {
+button:focus:before,
+.imp:hover:before {
   transition: 0.5s all ease;
   left: 0;
   right: 0;
@@ -100,4 +104,55 @@ button:active {
 }
 .grid {
   z-index: -1;
+}
+.card {
+  transition: all ease-in-out 0.6s;
+  box-shadow: 0 0 5px gray;
+}
+.card:hover {
+  background-color: rgba(6, 6, 6, 0.753);
+  color: white;
+  transform: scale(1.07);
+}
+.list {
+  color: gray;
+}
+.card:hover .list {
+  color: white;
+}
+.content {
+  border: 1px transparent solid;
+  box-shadow: 0 0 3px gray;
+}
+.content:hover {
+  box-shadow: 0 0 3px gray, 0 0 6px gray, 0 0 20px gray;
+}
+.contact {
+  background-color: rgb(29, 28, 28);
+}
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+nav a:hover {
+  color: #4a90e2;
+}
+
+nav a::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #4a90e2;
+  transition: width 0.3s ease;
+}
+
+nav a:hover::after {
+  width: 100%;
 }
