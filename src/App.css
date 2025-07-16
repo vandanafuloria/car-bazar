@@ -28,6 +28,10 @@ input:focus {
   background-size: cover;
   height: 70vh;
 }
+.main {
+  background-color: rgba(0, 0, 0, 0.407);
+  height: 70vh;
+}
 .home {
   background-color: rgba(0, 0, 0, 0.944);
 }
@@ -155,4 +159,10 @@ nav a::after {
 
 nav a:hover::after {
   width: 100%;
+}
+.login {
+  height: 40vh;
+}
+.eye {
+  top: 40px;
 }

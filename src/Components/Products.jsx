@@ -56,20 +56,24 @@ export default function Products() {
   const navigate = useNavigate();
 
   async function handleClickProduct(id) {
-    const car = await fetch(`${BASE_URL}/cars/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (!car.ok) {
-      throw new Error("Failed to fetch car details");
-    }
-    const result = await car.json();
+    try {
+      const car = await fetch(`${BASE_URL}/cars/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!car.ok) {
+        throw new Error("Failed to fetch car details");
+      }
+      const result = await car.json();
 
-    console.log(result.data.car);
-    setCar(result.data.car);
-    navigate("/car", { state: result.data.car });
+      console.log(result.data.car);
+      setCar(result.data.car);
+      navigate("/car", { state: result.data.car });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (

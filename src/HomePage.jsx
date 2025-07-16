@@ -1,7 +1,12 @@
 import { FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
+  const navigate = useNavigate();
+  const handleNavigation = () => {
+    navigate("/Profile");
+  };
   return (
     <>
       <div className="home sticky top-0 h-25 p-4 z-50 bg-white shadow-md">
@@ -30,7 +35,10 @@ export default function HomePage() {
           </nav>
 
           {/* User Icon */}
-          <span className="order-2 sm:order-3 text-2xl text-gray-600 cursor-pointer">
+          <span
+            className="order-2 sm:order-3 text-2xl text-gray-600 cursor-pointer"
+            onClick={handleNavigation}
+          >
             <FaUser />
           </span>
         </header>

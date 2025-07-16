@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 export default function Services() {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-white text-black px-4 py-12">
       <div className="max-w-6xl mx-auto">
@@ -45,12 +48,12 @@ export default function Services() {
           <h2 className="text-xl font-semibold mb-2">
             Ready to explore your next ride?
           </h2>
-          <a
+          <li
             href="/cars"
             className="inline-block mt-3 px-6 py-3 bg-black text-white rounded hover:bg-gray-800 transition"
           >
-            Browse Cars
-          </a>
+            <Link to="/">Browse Car</Link>
+          </li>
         </div>
       </div>
     </div>

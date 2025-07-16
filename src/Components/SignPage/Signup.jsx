@@ -2,268 +2,301 @@ import { SiGmail } from "react-icons/si";
 import { FaGoogle } from "react-icons/fa";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Login from "../LoginPage/LoginPage";
 import { BASE_URL } from "../utils/constans";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import {
   validateEmail,
   validateMobile,
   validatePassword,
 } from "../utils/utility";
+import img from "../../assets/image.png";
 
 export default function Signup() {
-  const signupDetails = {
+  const [createAccount, setCreateAccount] = useState({
     first: "",
     last: "",
     mobile: "",
     email: "",
     password: "",
     age: "",
-  };
-  //   const [details, setDetails] = useState(loginDetails);
-  const [createAccount, setCreateAccount] = useState(signupDetails);
-  const [emailError, setEmailError] = useState("");
-  const [ageError, setAgeError] = useState("");
-  const [MobileError, setMobileError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [passwordType, setPasswordType] = useState("");
-  const [name, setName] = useState("");
-  const [last, setLast] = useState("");
+    confirm: "",
+  });
 
-  const img =
-    "https://motorik.in/cdn/shop/collections/ban1.png?v=1745311178&width=1500";
+  const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const navigate = useNavigate();
 
-  function onCreatingAccountChanges(e) {
-    //onFormChange, onInputChange
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setCreateAccount((prev) => ({ ...prev, [name]: value }));
-  }
+  };
 
-  function handleAccountBlur(e) {
+  const validateForm = () => {
+    const newErrors = {};
+    if (!createAccount.first) newErrors.first = "First name is required";
+    if (!createAccount.last) newErrors.last = "Last name is required";
+    if (!validateEmail(createAccount.email)) newErrors.email = "Invalid email";
+    if (!validateMobile(createAccount.mobile))
+      newErrors.mobile = "Invalid mobile number";
+    if (createAccount.age < 18) newErrors.age = "Age must be at least 18 years";
+    if (!validatePassword(createAccount.password))
+      newErrors.password =
+        "Password must be 8+ chars with at least 1 capital, 1 number & 1 special char";
+    if (createAccount.password !== createAccount.confirm)
+      newErrors.confirm = "Passwords do not match";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleBlur = (e) => {
     const { name, value } = e.target;
+    const newErrors = { ...errors };
 
-    if (name === "first") {
-      if (value == "") {
-        setName("Required");
-      }
+    switch (name) {
+      case "first":
+        newErrors.first = value.trim() === "" ? "First name is required" : "";
+        break;
+      case "last":
+        newErrors.last = value.trim() === "" ? "Last name is required" : "";
+        break;
+      case "email":
+        newErrors.email = !validateEmail(value) ? "Invalid email" : "";
+        break;
+      case "mobile":
+        newErrors.mobile = !validateMobile(value)
+          ? "Invalid mobile number"
+          : "";
+        break;
+      case "age":
+        newErrors.age =
+          Number(value) < 18 ? "Age must be at least 18 years" : "";
+        break;
+      case "password":
+        newErrors.password = !validatePassword(value)
+          ? "Password must be 8+ chars with 1 capital, 1 number & 1 special char"
+          : "";
+        break;
+      case "confirm":
+        newErrors.confirm =
+          value !== createAccount.password ? "Passwords do not match" : "";
+        break;
+      default:
+        break;
     }
 
-    if (name === "last") {
-      if (value == "") {
-        setLast("Required");
-      }
-    }
-
-    if (name === "email") {
-      if (!validateEmail(value)) {
-        setEmailError("Invalid email address");
-      } else {
-        setEmailError("");
-      }
-    }
-
-    if (name === "age") {
-      if (value < 18) {
-        setAgeError("Your age should be at least 18");
-      } else {
-        setAgeError("");
-      }
-    }
-
-    if (name === "contact") {
-      if (!validateMobile(value)) {
-        setMobileError("Please enter a valid mobile number");
-      } else {
-        setMobileError("");
-      }
-    }
-
-    if (name === "password") {
-      if (!validatePassword(value)) {
-        setPasswordType(
-          "Password must be 8+ chars with at least 1 capital, 1 number, and 1 special character"
-        );
-      } else {
-        setPasswordType("");
-      }
-    }
-
-    if (name === "confirm") {
-      if (value !== createAccount.password) {
-        setPasswordError("Passwords do not match");
-      } else {
-        setPasswordError("");
-      }
-    }
-  }
+    setErrors(newErrors);
+  };
 
   const handleSignup = async () => {
+    if (!validateForm()) return;
+
     try {
       const res = await fetch(`${BASE_URL}/signup`, {
         method: "POST",
-        body: JSON.stringify(createAccount),
         headers: {
           "Content-Type": "application/json",
-          // Authentication: "Bearer ",
         },
+        body: JSON.stringify(createAccount),
       });
-      console.log(createAccount);
-      console.log(res);
-      const { status } = res;
-      const resBody = await res.json(); // store token in local
-      console.log(resBody);
 
-      if (status === 201) {
-        //  The request was successful and a new resource was created.
-        console.log("suscces", status);
-        toast.success(" Signup Successful ! Navigating to home page");
-        navigate("/home");
+      const data = await res.json();
+      if (res.status === 201) {
+        toast.success("Signup successful! Redirecting...");
+        navigate("/login");
       } else {
-        toast.error(resBody.error);
+        toast.error(data.error || "Signup failed");
       }
     } catch (err) {
-      toast.error(err.message);
+      toast.error("Something went wrong. Please try again.");
     }
   };
-  const navigate = useNavigate();
 
   return (
-    <>
-      <div className="flex  m-auto  h-screen">
-        <div className="p-5 pt-5 w-full bg-black md:w-1/2">
-          <h1 className="text-2xl font-bold text-center text-white">Sign Up</h1>
-          <p className="text-gray-300 text-center my-3">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          </p>{" "}
+    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      <div className="flex w-full max-w-6xl bg-white shadow-lg rounded-lg overflow-hidden">
+        {/* Left Image */}
+        <div className="hidden md:block md:w-1/2">
+          <img
+            src={img}
+            alt="Signup Visual"
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        {/* Right Form */}
+        <div className="w-full md:w-1/2 bg-gray-900 p-8 flex flex-col justify-center">
+          <h1 className="text-3xl font-bold text-white text-center mb-4">
+            Sign Up
+          </h1>
           <form
-            className="bg-gray-400 p-5 w-1/2 m-auto  min-w-[800px] flex flex-col gap-2"
-            noValidate
-            onSubmit={(e) => e.preventDefault()}
+            className="flex flex-col gap-3"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSignup();
+            }}
           >
-            <fieldset>
-              <label htmlFor="name">First</label>
+            {/* First & Last Name */}
+            <div className="flex gap-3">
+              <div className="w-1/2">
+                <label className="text-white block mb-1">First Name</label>
+                <input
+                  name="first"
+                  value={createAccount.first}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  className="w-full px-3 py-2 rounded  bg-gray-400 text-black outline-none"
+                  placeholder="First"
+                />
+                {errors.first && (
+                  <p className="text-sm text-red-500">{errors.first}</p>
+                )}
+              </div>
+              <div className="w-1/2">
+                <label className="text-white block mb-1">Last Name</label>
+                <input
+                  name="last"
+                  value={createAccount.last}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  className="w-full px-3 py-2 rounded  bg-gray-400 text-black outline-none"
+                  placeholder="Last"
+                />
+                {errors.last && (
+                  <p className="text-sm text-red-500">{errors.last}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Email */}
+            <div>
+              <label className="text-white block mb-1">Email</label>
               <input
-                className="w-full bg-white outline-none p-1"
-                type="text"
-                id="name"
-                placeholder="Enter first Name"
-                name="first"
-                value={createAccount.first}
-                onChange={(e) => onCreatingAccountChanges(e)}
-                onBlur={handleAccountBlur}
-              />
-              <span className="text-red-600 text-sm">{name}</span>
-            </fieldset>
-            <fieldset>
-              <label htmlFor="last">Last</label>
-              <input
-                className="w-full bg-white outline-none p-1"
-                type="text"
-                id="last"
-                name="last"
-                placeholder="Enter Last Name"
-                value={createAccount.last}
-                onChange={(e) => onCreatingAccountChanges(e)}
-                onBlur={handleAccountBlur}
-              />
-              <span className="text-red-600 text-sm">{last}</span>
-            </fieldset>
-            <fieldset>
-              <label htmlFor="email">Email</label>
-              <input
-                className="w-full bg-white outline-none p-1"
-                type="text"
-                placeholder="Enter Email"
                 name="email"
-                id="email"
+                type="email"
                 value={createAccount.email}
-                onChange={(e) => onCreatingAccountChanges(e)}
-                onBlur={handleAccountBlur}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="w-full px-3 py-2 rounded  bg-gray-400 text-black outline-none"
+                placeholder="Email"
               />
-              <span className=" text-red-500 text-sm">{emailError}</span>
-            </fieldset>
-            <fieldset>
-              <label htmlFor="age">Age</label>
+              {errors.email && (
+                <p className="text-sm text-red-500">{errors.email}</p>
+              )}
+            </div>
+
+            {/* Mobile and Age */}
+            <div className="flex gap-3">
+              <div className="w-1/2">
+                <label className="text-white block mb-1">Mobile</label>
+                <input
+                  name="mobile"
+                  value={createAccount.mobile}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 rounded  bg-gray-400 text-black outline-none"
+                  placeholder="Mobile"
+                />
+                {errors.mobile && (
+                  <p className="text-sm text-red-500">{errors.mobile}</p>
+                )}
+              </div>
+              <div className="w-1/2">
+                <label className="text-white block mb-1">Age</label>
+                <input
+                  name="age"
+                  type="number"
+                  value={createAccount.age}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  className="w-full px-3 py-2 rounded  bg-gray-400 text-black outline-none"
+                  placeholder="Age"
+                />
+                {errors.age && (
+                  <p className="text-sm text-red-500">{errors.age}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Password */}
+            {/* Password */}
+            <div className="relative">
+              <label className="text-white block mb-1">Password</label>
               <input
-                className="w-full bg-white outline-none p-1"
-                type="number"
-                placeholder="Enter Age"
-                id="age"
-                name="age"
-                value={Number(createAccount.age)}
-                onChange={(e) => onCreatingAccountChanges(e)}
-                onBlur={handleAccountBlur}
-              />
-              <span className=" text-red-500 text-sm">{ageError}</span>
-            </fieldset>
-            <fieldset>
-              <label htmlFor="mobile">Mobile</label>
-              <input
-                className="w-full bg-white outline-none p-1"
-                type="text"
-                id="mobile"
-                placeholder="Mobile"
-                name="mobile"
-                value={createAccount.mobile}
-                onChange={(e) => onCreatingAccountChanges(e)}
-                onBlur={handleAccountBlur}
-              />
-              <span className=" text-red-500 text-sm">{MobileError}</span>
-            </fieldset>
-            <fieldset>
-              <label htmlFor="password">password</label>
-              <input
-                className="w-full bg-white outline-none p-1"
-                type="text"
-                placeholder="Password"
-                id="password"
                 name="password"
+                type={showPassword ? "text" : "password"}
                 value={createAccount.password}
-                onChange={(e) => onCreatingAccountChanges(e)}
-                onBlur={handleAccountBlur}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="w-full px-3 py-2 pr-10 rounded bg-gray-400 text-black outline-none"
+                placeholder="Password"
               />
-              <span className="text-sm text-red-500">{passwordType}</span>
-            </fieldset>
-            <fieldset>
-              <label htmlFor="confirm">Confirm Password</label>
+              <span
+                onClick={() => setShowPassword((prev) => !prev)}
+                className=" eye absolute top-9 right-0 cursor-pointer text-black"
+              >
+                {showPassword ? (
+                  <FaEyeSlash color="gray" size={20} />
+                ) : (
+                  <FaEye color="gray" size={20} />
+                )}
+              </span>
+              {errors.password && (
+                <p className="text-sm text-red-500">{errors.password}</p>
+              )}
+            </div>
+
+            {/* Confirm Password */}
+            <div className="relative">
+              <label className="text-white block mb-1">Confirm Password</label>
               <input
-                className="w-full bg-white outline-none p-1"
-                type="confirm"
-                id="confirm"
-                placeholder="Confirm Password"
                 name="confirm"
+                type={showConfirmPassword ? "text" : "password"}
                 value={createAccount.confirm}
-                // onChange={(e) => onCreatingAccountChanges(e)}
-                onBlur={handleAccountBlur}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="w-full px-3 py-2 pr-10 rounded bg-gray-400 text-black outline-none"
+                placeholder="Confirm Password"
               />
-              <span className="text-sm text-red-500">{passwordError}</span>
-            </fieldset>
+              <span
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                className="eye absolute top-9 right-0 cursor-pointer text-black"
+              >
+                {showConfirmPassword ? (
+                  <FaEyeSlash color="gray" size={20} />
+                ) : (
+                  <FaEye color="gray" size={20} />
+                )}
+              </span>
+              {errors.confirm && (
+                <p className="text-sm text-red-500">{errors.confirm}</p>
+              )}
+            </div>
 
             <button
               type="submit"
-              className="bg-red-600 font-semibold text-2xl w-full text-white"
+              className="mt-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded"
               onClick={handleSignup}
             >
-              Sign Up
+              Create Account
             </button>
 
-            <p className="text-center">
-              Already Have an account ?{" "}
+            <p className="text-center text-white">
+              Already have an account?{" "}
               <span
-                className="cursor-pointer text-red-500 italic"
-                onClick={() => navigate("/Login")}
+                className="text-red-400 hover:underline cursor-pointer"
+                onClick={() => navigate("/login")}
               >
                 Login
               </span>
             </p>
           </form>
         </div>
-
-        <div className="img-container hidden md:block w-1/2 h-screen">
-          <img className="w-full h-full" src={img} alt="img" />
-        </div>
       </div>
-    </>
+      <ToastContainer />
+    </div>
   );
 }

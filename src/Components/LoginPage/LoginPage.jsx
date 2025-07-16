@@ -7,6 +7,8 @@ import { SiGmail } from "react-icons/si";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constans";
 import login from "../../assets/new.svg";
+import bg from "../../assets/image.png";
+import { Link } from "react-router-dom";
 
 import { validateEmail, validatePassword } from "../utils/utility";
 
@@ -14,8 +16,7 @@ export default function Login() {
   const [loginError, setLoginError] = useState("");
   const [loginSuccess, setSuccess] = useState(false);
   const [isSpinner, setIsSpinner] = useState(false);
-  const img =
-    "https://motorik.in/cdn/shop/collections/ban1.png?v=1745311178&width=1500";
+
   const [details, setDetails] = useState({
     email: "",
     password: "",
@@ -23,6 +24,7 @@ export default function Login() {
 
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [remember, setRemember] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -36,7 +38,13 @@ export default function Login() {
         },
       });
       const { status } = res;
-      const resBody = await res.json(); // store token in local
+      const token = await res.json(); // store token in local
+      console.log(token);
+      if (remember) {
+        localStorage.setItem("token", token);
+      } else {
+        sessionStorage.setItem("token", token);
+      }
       setIsSpinner(false);
 
       if (status === 200) {
@@ -65,127 +73,134 @@ export default function Login() {
         setEmailError("");
       }
     }
-
-    // if (name === "password") {
-    //   if (!validatePassword(value)) {
-    //     setPasswordError(
-    //       "Password must be 8+ chars with at least 1 capital, 1 number, and 1 special character"
-    //     );
-    //   } else {
-    //     setPasswordError("");
-    //   }
-    // }
   }
 
   return (
-    <div className="flex  m-auto  h-screen">
-      <div className="img-container hidden md:block w-1/2 h-screen">
-        <img className="w-full h-full" src={img} alt="img" />
-      </div>
-      <div className="p-5 pt-5 w-full bg-black md:w-1/2">
-        <h1 className="text-2xl font-bold text-center text-white">Login</h1>
-        <p className="text-gray-300 text-center my-3">
-          Enter Your credential to access your account
-        </p>
-        <span>
-          {/* <ToastContainer position="top-right" autoClose={1000} /> */}
-        </span>
+    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      {/* Centered Card */}
+      <div className="flex w-full max-w-5xl bg-white shadow-lg rounded-lg overflow-hidden">
+        {/* Left Image Section */}
+        <div className="hidden md:block md:w-1/2">
+          <img
+            src={bg}
+            alt="Login Visual"
+            className="w-full h-full object-cover"
+          />
+        </div>
 
-        <h3 className="text-red-700 text-center h-5">{loginError}</h3>
-        <form
-          className="bg-gray-400 p-5 w-2/4 m-auto flex flex-col gap-2"
-          noValidate
-          onSubmit={(e) => e.preventDefault()}
-        >
-          <fieldset className="m-2">
-            <label className="cursor-pointer" htmlFor="email">
-              Email
-            </label>
-            <input
-              className="w-full bg-white outline-none p-1"
-              type="email"
-              name="email"
-              id="email"
-              placeholder="Enter Email"
-              value={details.email}
-              onChange={(e) => onDetailsChange(e)}
-              onBlur={handleBlur}
-            />
-            <span className="text-red-600 text-sm">{emailError}</span>
-          </fieldset>
-          <fieldset className="m-2">
-            <label className="cursor-pointer" htmlFor="password">
-              Password
-            </label>
-            <input
-              className="w-full bg-white outline-none p-1"
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Enter Password"
-              value={details.password}
-              onChange={(e) => onDetailsChange(e)}
-              onBlur={handleBlur}
-            />
-            <span className="text-red-600 text-sm">{passwordError}</span>
-          </fieldset>
-          <div className="flex justify-between">
-            <div>
-              <input type="checkbox" />
-              <span>Remember Me </span>
-            </div>
-            <div>
-              <a href="#" className="hover:underline hover:text-blue-400">
-                Forget password
-              </a>
-            </div>
-          </div>
-          <button
-            type="submit"
-            className="bg-gray-100 font-semibold text-2xl text-white flex justify-center gap-2 relative"
-            onClick={() => {
+        {/* Right Form Section */}
+        <div className="w-full md:w-1/2 bg-gray-900 p-8 flex flex-col justify-center">
+          <h1 className="text-3xl font-bold text-white text-center">Login</h1>
+          <p className="text-gray-300 text-center my-3">
+            Enter your credentials to access your account
+          </p>
+
+          <form
+            className="flex flex-col gap-4"
+            onSubmit={(e) => {
+              e.preventDefault();
               setIsSpinner(true);
-              handleLogin;
+              handleLogin();
             }}
           >
-            <span className="text-red-600">Login</span>
-            {details.email && details.password && isSpinner && (
-              <img
-                className="spinner absolute right"
-                width="35px"
-                src={login}
-                alt=""
+            {/* Email Field */}
+            <div>
+              <label htmlFor="email" className="text-white block mb-1">
+                Email
+              </label>
+              <input
+                className="w-full px-3 py-2 rounded bg-white text-black outline-none"
+                type="email"
+                id="email"
+                name="email"
+                value={details.email}
+                onChange={onDetailsChange}
+                onBlur={handleBlur}
+                placeholder="Enter Email"
               />
-            )}
-          </button>
+              <p className="text-red-500 text-sm">{emailError}</p>
+            </div>
 
-          <div className="text-center">
-            <span>or</span>
-          </div>
-          <div className="flex justify-around">
-            <div className="flex items-center gap-1 border border-red-600 p-2 rounded-lg">
-              <span>
-                <FaGoogle />
-              </span>
-              <span>Google</span>
+            {/* Password Field */}
+            <div>
+              <label htmlFor="password" className="text-white block mb-1">
+                Password
+              </label>
+              <input
+                className="w-full px-3 py-2 rounded bg-white text-black outline-none"
+                type="password"
+                id="password"
+                name="password"
+                value={details.password}
+                onChange={onDetailsChange}
+                onBlur={handleBlur}
+                placeholder="Enter Password"
+              />
+              <p className="text-red-500 text-sm">{passwordError}</p>
             </div>
-            <div className="flex items-center gap-1 border border-red-600 p-2 rounded-lg">
-              <span>
-                <SiGmail />
-              </span>
-              <span>Gmail</span>
+
+            {/* Remember Me + Forgot */}
+            <div className="flex justify-between text-white text-sm">
+              <label className="flex gap-2 items-center">
+                <input
+                  type="checkbox"
+                  checked={remember}
+                  onChange={(e) => setRemember(e.target.checked)}
+                />
+                Remember Me
+              </label>
+              <a href="#" className="hover:underline text-blue-400">
+                Forgot password?
+              </a>
             </div>
-          </div>
-          <p className="text-center">
-            Dont have a account ?{" "}
+
+            {/* Submit */}
             <button
-              className="cursor-pointer text-red-500 italic"
-              onClick={() => navigate("/Signup")}
+              type="submit"
+              className="bg-red-600 text-white py-2 rounded font-semibold hover:bg-red-700 relative"
             >
-              Sign Up
+              Login
+              {details.email && details.password && isSpinner && (
+                <img
+                  src={login}
+                  alt="spinner"
+                  className="absolute right-4 w-6 h-6 animate-spin"
+                />
+              )}
             </button>
-          </p>
-        </form>
+
+            {/* OR */}
+            <div className="text-center text-white">or</div>
+
+            {/* Social Buttons */}
+            <div className="flex justify-around">
+              <button
+                type="button"
+                className="flex items-center gap-2 px-4 py-2 border border-red-500 rounded text-white hover:bg-red-600"
+              >
+                <FaGoogle /> Google
+              </button>
+              <button
+                type="button"
+                className="flex items-center gap-2 px-4 py-2 border border-red-500 rounded text-white hover:bg-red-600"
+              >
+                <SiGmail /> Gmail
+              </button>
+            </div>
+
+            {/* Sign up Redirect */}
+            <p className="text-center text-white mt-4">
+              Don't have an account?{" "}
+              <span
+                type="button"
+                className="text-red-400 hover:underline italic p-0 font-extralight "
+                onClick={() => navigate("/signup")}
+              >
+                <Link to="/signup"> Sign Up</Link>
+              </span>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   );
