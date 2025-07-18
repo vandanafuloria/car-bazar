@@ -2,7 +2,7 @@ import { FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-export default function HomePage() {
+export default function HomePage({ isLoggedIn }) {
   const navigate = useNavigate();
   const handleNavigation = () => {
     navigate("/Profile");
@@ -39,7 +39,7 @@ export default function HomePage() {
             className="order-2 sm:order-3 text-2xl text-gray-600 cursor-pointer"
             onClick={handleNavigation}
           >
-            <FaUser />
+            {isLoggedIn ? <FaUser /> : <button> Login </button>}
           </span>
         </header>
       </div>

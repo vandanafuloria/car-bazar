@@ -2,7 +2,7 @@ import { SiGmail } from "react-icons/si";
 import { FaGoogle } from "react-icons/fa";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL } from "../utils/constans";
+import { BASE_URL } from "../../utils/constans";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -10,7 +10,7 @@ import {
   validateEmail,
   validateMobile,
   validatePassword,
-} from "../utils/utility";
+} from "../../utils/utility";
 import img from "../../assets/image.png";
 
 export default function Signup() {

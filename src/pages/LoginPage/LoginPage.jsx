@@ -5,12 +5,12 @@ import { useState } from "react";
 import { FaGoogle } from "react-icons/fa";
 import { SiGmail } from "react-icons/si";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL } from "../utils/constans";
+import { BASE_URL } from "../../utils/constans";
 import login from "../../assets/new.svg";
 import bg from "../../assets/image.png";
 import { Link } from "react-router-dom";
 
-import { validateEmail, validatePassword } from "../utils/utility";
+import { validateEmail, validatePassword } from "../../utils/utility";
 
 export default function Login() {
   const [loginError, setLoginError] = useState("");
@@ -28,6 +28,9 @@ export default function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    // if (!validateEmail(details.email) )
+    //   return;
+
     try {
       const res = await fetch(`${BASE_URL}/login`, {
         method: "POST",
@@ -38,8 +41,8 @@ export default function Login() {
         },
       });
       const { status } = res;
-      const token = await res.json(); // store token in local
-      console.log(token);
+      const { token } = await res.json(); // store token in local
+
       if (remember) {
         localStorage.setItem("token", token);
       } else {
@@ -49,7 +52,7 @@ export default function Login() {
 
       if (status === 200) {
         toast.success("Authentication Successful ! Navigating to home page");
-        navigate("/home");
+        navigate("/");
       } else {
         toast.error("Password or Email not correct");
       }
@@ -65,7 +68,8 @@ export default function Login() {
 
   function handleBlur(e) {
     const { name, value } = e.target;
-
+    console.log("Blur event");
+    console.log({ name, value });
     if (name === "email") {
       if (!validateEmail(value)) {
         setEmailError("Invalid email address");

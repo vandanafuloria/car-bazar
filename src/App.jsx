@@ -1,38 +1,41 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Account from "../src/Components/AccountPage/Account";
-import Home from "./HomePage";
-import AboutUs from "./Components/About.jsx";
-import ContactUs from "./Components/Contact.jsx";
+import Account from "./pages/AccountPage/AccountPage.jsx";
+import Home from "./components/Header.jsx";
+import AboutUs from "./pages/AboutPage/About.jsx";
+import ContactUs from "./pages/ContactPage/Contact.jsx";
 import { useLocation } from "react-router-dom";
 
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import Login from "./Components/LoginPage/LoginPage";
-import Signup from "./Components/SignPage/Signup";
-import MainPage from "./Components/MainPage.jsx";
-import Services from "./Components/Service.jsx";
-import Profile from "./Profile.jsx";
+import Login from "./pages/LoginPage/LoginPage.jsx";
+import Signup from "./pages/SignPage/Signup.jsx";
+import MainPage from "./pages/MainPage/MainPage.jsx";
+import Services from "./pages/ServicePage/Service.jsx";
+import Profile from "./Pages/ProfilePage/Profile.jsx";
 
 import "./App.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CarDetail from "./Components/CarDetail.jsx";
-import { BASE_URL } from "./Components/utils/constans.js";
+import CarDetail from "./components/CarDetail.jsx";
+import { BASE_URL } from "./utils/constans.js";
 
 function App() {
   const [user, setUser] = useState(null);
   const [checkingAuth, setCheckingAuth] = useState(true); // Wait before rendering anything
   const location = useLocation();
   useEffect(() => {
+    console.log("Running effect");
     const checkAuth = async () => {
       const token =
         localStorage.getItem("token") || sessionStorage.getItem("token");
-      console.log(token);
+      console.log({ token });
+      console.log("taoken check");
       if (!token) {
         setCheckingAuth(false);
         return;
       }
+      console.log("Making api cslal");
 
       try {
         const response = await fetch(`${BASE_URL}/whoami`, {
@@ -46,18 +49,18 @@ function App() {
         if (!response.ok) {
           throw new Error("Token invalid or expired");
         }
-
         const result = await response.json();
+        console.log({ result });
 
-        if (result.success) {
+        if (result.user) {
           setUser(result.user);
         } else {
           throw new Error("Invalid response from server");
         }
       } catch (error) {
-        console.error("Auth check failed:", error.message);
-        localStorage.removeItem("token");
-        sessionStorage.removeItem("token");
+        console.error("Auth check failed:", error);
+        // localStorage.removeItem("token");
+        // sessionStorage.removeItem("token");
       } finally {
         setCheckingAuth(false);
       }
@@ -65,6 +68,8 @@ function App() {
 
     checkAuth();
   }, []);
+
+  console.log({ user });
 
   if (checkingAuth) {
     return (
@@ -82,7 +87,7 @@ function App() {
     <>
       <ToastContainer />
 
-      {shouldShowHeader && <Home />}
+      {shouldShowHeader && <Home isLoggedIn={!!user} />}
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/services" element={<Services />} />

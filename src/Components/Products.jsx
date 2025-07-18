@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BASE_URL } from "./utils/constans";
+import { BASE_URL } from "../utils/constans";
 import Car from "./Car";
 import { useNavigate } from "react-router-dom";
 

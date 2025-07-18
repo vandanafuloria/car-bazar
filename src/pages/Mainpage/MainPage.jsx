@@ -1,5 +1,5 @@
-import HomePage from "../HomePage";
-import Products from "./Products";
+import HomePage from "../../components/Header";
+import Products from "../../components/Products";
 
 export default function MainPage() {
   return (

@@ -22,15 +22,15 @@ input:focus {
   right: 1rem;
 }
 .main-page {
-  background-image: url("https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-image: url("https://media.licdn.com/dms/image/v2/D4D22AQH8mtPTT2h2_A/feedshare-shrink_2048_1536/B4DZgCaFfHHMAo-/0/1752387051398?e=1755734400&v=beta&t=y8F2J9MJDaizB-hllVfal5Hg_FMkzRSEXxpDfQDt3eU");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 70vh;
+  height: 90vh;
 }
 .main {
   background-color: rgba(0, 0, 0, 0.407);
-  height: 70vh;
+  height: 90vh;
 }
 .home {
   background-color: rgba(0, 0, 0, 0.944);
