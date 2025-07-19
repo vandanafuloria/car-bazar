@@ -8,8 +8,6 @@ export default function Products() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [car, setCar] = useState("");
-  console.log("this is car", car);
 
   const fetchCars = async () => {
     if (loading || !hasMore) return;
@@ -53,28 +51,6 @@ export default function Products() {
   useEffect(() => {
     fetchCars();
   }, []);
-  const navigate = useNavigate();
-
-  async function handleClickProduct(id) {
-    try {
-      const car = await fetch(`${BASE_URL}/cars/${id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!car.ok) {
-        throw new Error("Failed to fetch car details");
-      }
-      const result = await car.json();
-
-      console.log(result.data.car);
-      setCar(result.data.car);
-      navigate("/car", { state: result.data.car });
-    } catch (err) {
-      console.log(err);
-    }
-  }
 
   return (
     <div className="p-4">
@@ -90,7 +66,7 @@ export default function Products() {
             brandName={car.brandName}
             avgRating={car.avgRating}
             priceRange={car.priceRange}
-            onClick={handleClickProduct}
+            // onClick={handleClickProduct}
           />
         ))}
       </div>

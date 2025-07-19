@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 
 import { validateEmail, validatePassword } from "../../utils/utility";
 
-export default function Login() {
+export default function Login({ onLogin }) {
   const [loginError, setLoginError] = useState("");
   const [loginSuccess, setSuccess] = useState(false);
   const [isSpinner, setIsSpinner] = useState(false);
@@ -30,34 +30,12 @@ export default function Login() {
   const handleLogin = async () => {
     // if (!validateEmail(details.email) )
     //   return;
-
     try {
-      const res = await fetch(`${BASE_URL}/login`, {
-        method: "POST",
-        body: JSON.stringify(details),
-        headers: {
-          "Content-Type": "application/json",
-          Authentication: "Bearer ",
-        },
-      });
-      const { status } = res;
-      const { token } = await res.json(); // store token in local
-
-      if (remember) {
-        localStorage.setItem("token", token);
-      } else {
-        sessionStorage.setItem("token", token);
-      }
+      setIsSpinner(true);
+      await onLogin(details, remember);
       setIsSpinner(false);
-
-      if (status === 200) {
-        toast.success("Authentication Successful ! Navigating to home page");
-        navigate("/");
-      } else {
-        toast.error("Password or Email not correct");
-      }
     } catch (err) {
-      toast.error(err.message);
+      console.log(err);
     }
   };
 
@@ -103,7 +81,6 @@ export default function Login() {
             className="flex flex-col gap-4"
             onSubmit={(e) => {
               e.preventDefault();
-              setIsSpinner(true);
               handleLogin();
             }}
           >

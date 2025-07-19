@@ -1,6 +1,35 @@
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { BASE_URL } from "../utils/constans";
+import { useNavigate } from "react-router-dom";
 export default function CarDetail() {
-  const { state: car } = useLocation();
+  const [car, setCar] = useState("");
+  // const { state: car } = useLocation();
+  const { id } = useParams();
+  console.log(id);
+
+  async function handleClickProduct() {
+    try {
+      const car = await fetch(`${BASE_URL}/cars/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!car.ok) {
+        throw new Error("Failed to fetch car details");
+      }
+      const result = await car.json();
+
+      console.log(result.data.car);
+      setCar(result.data.car);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  useEffect(() => {
+    handleClickProduct();
+  }, []);
 
   if (!car) {
     return (
@@ -40,6 +69,10 @@ export default function CarDetail() {
                 style={{ backgroundColor: mapColor(color) }}
               ></span>
             ))}
+          </div>
+          <div className="flex gap-2 justify-around">
+            <button>Buy Now</button>
+            <button>Add to Cart</button>
           </div>
         </div>
       </div>

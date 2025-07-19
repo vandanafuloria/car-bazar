@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+
 export default function Car({
   id,
   image,
@@ -7,14 +8,13 @@ export default function Car({
   brandName,
   avgRating,
   priceRange,
-  onClick,
 }) {
   const navigate = useNavigate();
   return (
     <>
       <div
         key={id}
-        onClick={() => onClick(id)}
+        onClick={() => navigate(`/cars/${id}`)}
         className="car relative border rounded-lg p-4 shadow"
       >
         <img

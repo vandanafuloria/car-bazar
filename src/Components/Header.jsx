@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 export default function HomePage({ isLoggedIn }) {
+  // console.log(user);
   const navigate = useNavigate();
   const handleNavigation = () => {
     navigate("/Profile");
@@ -39,7 +40,11 @@ export default function HomePage({ isLoggedIn }) {
             className="order-2 sm:order-3 text-2xl text-gray-600 cursor-pointer"
             onClick={handleNavigation}
           >
-            {isLoggedIn ? <FaUser /> : <button> Login </button>}
+            {isLoggedIn ? (
+              <button>Profile</button>
+            ) : (
+              <button>Login/Signup</button>
+            )}
           </span>
         </header>
       </div>
