@@ -1,11 +1,13 @@
 import { SiGmail } from "react-icons/si";
 import { FaGoogle } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../utils/constans";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import {
   validateEmail,
   validateMobile,
@@ -292,6 +294,14 @@ export default function Signup() {
               >
                 Login
               </span>
+            </p>
+            <p className="text-center">
+              <Link
+                to="/"
+                className=" inline-flex items-center gap-2 text-red-500 hover:underline"
+              >
+                Back to Home <FaArrowRight />
+              </Link>
             </p>
           </form>
         </div>

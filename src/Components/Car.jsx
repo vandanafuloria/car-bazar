@@ -15,7 +15,7 @@ export default function Car({
       <div
         key={id}
         onClick={() => navigate(`/cars/${id}`)}
-        className="car relative border rounded-lg p-4 shadow"
+        className="car  border rounded-lg p-4 shadow"
       >
         <img
           src={image}
@@ -27,7 +27,7 @@ export default function Car({
         <p className="text-sm">Price: {priceRange}</p>
         <p className="text-sm">Rating: {avgRating}</p>
         <p className="text-sm text-gray-500">Colors: {colors.join(", ")}</p>
-        <button className="btn  w-full">Buy Now</button>
+        <button className="btn  w-1/3 m-auto mt-3">Buy Now</button>
       </div>
     </>
   );

@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { FaGoogle } from "react-icons/fa";
 import { SiGmail } from "react-icons/si";
+import { FaArrowRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../utils/constans";
 import login from "../../assets/new.svg";
@@ -179,6 +180,14 @@ export default function Login({ onLogin }) {
               >
                 <Link to="/signup"> Sign Up</Link>
               </span>
+            </p>
+            <p className="text-center">
+              <Link
+                to="/"
+                className="flex inline-flex items-center gap-2 text-red-500 hover:underline"
+              >
+                Back to Home <FaArrowRight />
+              </Link>
             </p>
           </form>
         </div>

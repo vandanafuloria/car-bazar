@@ -10,7 +10,7 @@ export default function ContactUs() {
         </p>
 
         {/* Contact Form */}
-        <form className="bg-white text-black rounded-lg shadow-md p-8 space-y-6 w-2/4 m-auto">
+        <form className="bg-white text-black rounded-lg w-full shadow-md p-8 space-y-6 md:w-2/4 m-auto">
           <div>
             <label htmlFor="name" className="block font-medium mb-1">
               Name

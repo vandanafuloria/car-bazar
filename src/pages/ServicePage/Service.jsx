@@ -65,7 +65,7 @@ function ServiceCard({ title, desc }) {
   return (
     <div className=" card border border-gray-200 rounded-lg p-6 shadow hover:shadow-md transition text-center">
       <h3 className="text-xl font-bold mb-2">{title}</h3>
-      <p className="text-gray-500 text-sm">{desc}</p>
+      <p className=" text-sm">{desc}</p>
     </div>
   );
 }

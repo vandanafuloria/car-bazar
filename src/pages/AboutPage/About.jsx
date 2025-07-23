@@ -69,9 +69,9 @@ export default function AboutUs() {
 // Reusable Card component
 function Card({ title, text }) {
   return (
-    <div className=" card bg-white border rounded-lg p-6 shadow-sm hover:shadow-md transition">
+    <div className="card bg-white border rounded-lg p-6 shadow-sm hover:shadow-md transition">
       <h3 className="text-lg font-bold mb-2">{title}</h3>
-      <p className="text-gray-600 text-sm">{text}</p>
+      <p className=" text-sm">{text}</p>
     </div>
   );
 }

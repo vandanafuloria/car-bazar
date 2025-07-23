@@ -70,6 +70,14 @@ export default function Profile({ logout }) {
           >
             Logout
           </button>
+          <p className="text-center">
+            <Link
+              to="/"
+              className=" inline-flex items-center gap-2 text-red-500 hover:underline"
+            >
+              Back to Home <FaArrowRight />
+            </Link>
+          </p>
         </div>
       </div>
 

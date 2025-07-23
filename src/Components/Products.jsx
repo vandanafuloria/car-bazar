@@ -35,11 +35,15 @@ export default function Products() {
   // ⬇ Trigger fetch when near bottom
   useEffect(() => {
     const handleScroll = () => {
-      const scrollHeight = document.documentElement.scrollHeight;
-      const scrollTop = document.documentElement.scrollTop;
+      const scrollTop = window.scrollY;
       const clientHeight = window.innerHeight;
+      const scrollHeight = document.body.scrollHeight;
 
-      if (scrollTop + clientHeight >= scrollHeight - 100) {
+      if (
+        scrollTop + clientHeight >= scrollHeight - 100 &&
+        !loading &&
+        hasMore
+      ) {
         fetchCars();
       }
     };

@@ -10,16 +10,16 @@ export default function HomePage({ isLoggedIn }) {
   };
   return (
     <>
-      <div className="home sticky top-0 h-25 p-4 z-50 bg-white shadow-md">
-        <header className="flex justify-between gap-5 w-full flex-wrap items-center">
-          <h1 className="font-bold  ">
-            <span className="text-2xl sm:text-4xl ">CAR</span>
-            <span className="text-blue-600 text-3xl sm:text-5xl ">Bazar</span>
+      <div className="header sticky top-0 px-4 z-50  shadow-md">
+        <header className="flex justify-between gap-1 w-full flex-wrap items-center">
+          <h1 className="font-bold">
+            <span className="text-xl sm:text-3xl text-white">CAR</span>
+            <span className="bazar text-2xl sm:text-4xl ">Bazar</span>
           </h1>
 
           {/* Navigation */}
           <nav className="w-full sm:w-1/2 order-3 sm:order-2 mt-1 sm:mt-0">
-            <ul className="flex justify-around gap-4 text-gray-200 text-lg font-medium">
+            <ul className="flex justify-around gap-4 text-gray-200 text-lg font-medium p-2">
               <li className="text-sm">
                 <Link to="/">Home</Link>
               </li>
@@ -41,9 +41,9 @@ export default function HomePage({ isLoggedIn }) {
             onClick={handleNavigation}
           >
             {isLoggedIn ? (
-              <button>Profile</button>
+              <button className="profile text-sm">Profile</button>
             ) : (
-              <button>Login/Signup</button>
+              <button className="profile text-lg sm">Login/Signup</button>
             )}
           </span>
         </header>
