@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Account from "./pages/AccountPage/AccountPage.jsx";
-import Home from "./components/Header.jsx";
+import Home from "../src/components/Header.jsx";
 import AboutUs from "./pages/AboutPage/About.jsx";
 import ContactUs from "./pages/ContactPage/Contact.jsx";
 import { useLocation } from "react-router-dom";
@@ -10,7 +10,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "./pages/LoginPage/LoginPage.jsx";
 import Signup from "./pages/SignPage/Signup.jsx";
-import MainPage from "./pages/MainPage/MainPage.jsx";
+import MainPage from "../src/pages/Mainpage/MainPage.jsx";
 import Services from "./pages/ServicePage/Service.jsx";
 import Profile from "./Pages/ProfilePage/Profile.jsx";
 
