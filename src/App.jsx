@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Account from "./pages/AccountPage/AccountPage.jsx";
-import Home from "../src/components/Header.jsx";
+import Header from "../src/components/Header.jsx";
 import AboutUs from "./pages/AboutPage/About.jsx";
 import ContactUs from "./pages/ContactPage/Contact.jsx";
 import { useLocation } from "react-router-dom";
@@ -127,7 +127,7 @@ function App() {
       <ToastContainer />
 
       {shouldShowHeader && (
-        <Home isLoggedIn={!!user} logout={handleLogoutStatus} />
+        <Header isLoggedIn={!!user} logout={handleLogoutStatus} />
       )}
       <Routes>
         <Route path="/" element={<MainPage />} />
