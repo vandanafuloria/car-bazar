@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Account from "./pages/AccountPage/AccountPage.jsx";
-import Header from "../src/components/Header.jsx";
+import Header from "./Components/Header.jsx";
 import AboutUs from "./pages/AboutPage/About.jsx";
 import ContactUs from "./pages/ContactPage/Contact.jsx";
 import { useLocation } from "react-router-dom";
@@ -12,12 +12,12 @@ import Login from "./pages/LoginPage/LoginPage.jsx";
 import Signup from "./pages/SignPage/Signup.jsx";
 import MainPage from "./pages/Mainpage/MainPage.jsx";
 import Services from "./pages/ServicePage/Service.jsx";
-import Profile from "./Pages/ProfilePage/Profile.jsx";
+import Profile from "./pages/ProfilePage/Profile.jsx";
 
 import "./App.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CarDetail from "./components/CarDetail.jsx";
+import CarDetail from "./Components/CarDetail.jsx";
 import { BASE_URL } from "./utils/constans.js";
 
 function App() {

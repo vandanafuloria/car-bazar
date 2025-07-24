@@ -1,6 +1,6 @@
 // import HomePage from "../../components/Header";
-import Products from "../../components/Products";
-import Features from "../../components/Features";
+import Products from "../../Components/Products";
+import Features from "../../Components/Features";
 
 export default function MainPage() {
   return (
