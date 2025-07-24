@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Account from "./pages/AccountPage/AccountPage.jsx";
-import Header from "./components/Header.jsx";
+import Header from "../src/components/Header.jsx";
 import AboutUs from "./pages/AboutPage/About.jsx";
 import ContactUs from "./pages/ContactPage/Contact.jsx";
 import { useLocation } from "react-router-dom";
