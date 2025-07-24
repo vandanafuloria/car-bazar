@@ -1,5 +1,7 @@
 # 🚗 Car Bazar
 
+👉 [Live link](https://car-bazar-ybhp.vercel.app/)
+
 ## Description
 
 Car Bazar is a lightweight React project that demonstrates **JWT-based authentication**. It includes secure **login**, **signup**, **logout**, and a **protected profile** page using a REST API backend.
